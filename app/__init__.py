@@ -11,7 +11,11 @@ def create_app():
 
     db.init_app(app)
 
+    from app import models  # noqa: F401  (registers the tables)
     from app.routes import main
     app.register_blueprint(main)
+
+    with app.app_context():
+        db.create_all()
 
     return app
