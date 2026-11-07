@@ -1,12 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YatraEase</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}YatraEase - Home{% endblock %}
+
+{% block content %}
+<section class="hero">
     <h1>Welcome to YatraEase</h1>
     <p>Book buses, stays and attractions across Andhra Pradesh and Telangana.</p>
-</body>
-</html>
+</section>
+
+<h2>Popular services</h2>
+<br>
+<div class="grid">
+    {% for service in services %}
+    <div class="card">
+        <span class="badge">{{ service.type }}</span>
+        <h3>{{ service.name_en }}</h3>
+        <p class="location">{{ service.location }}</p>
+        <p>{{ service.description_en }}</p>
+        <p class="price">&#8377;{{ service.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
