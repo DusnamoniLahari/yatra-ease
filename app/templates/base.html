@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,18 +9,24 @@
 <body>
     <header class="navbar">
         <a class="brand" href="{{ url_for('main.home') }}">YatraEase</a>
-               <nav>
-            <a href="{{ url_for('main.home') }}">Home</a>
+        <nav>
+            <a href="{{ url_for('main.home') }}">{{ t('nav_home') }}</a>
             {% if current_user.is_authenticated %}
-                <span class="nav-user">Hi, {{ current_user.name }}</span>
+                <span class="nav-user">{{ t('nav_hi') }}, {{ current_user.name }}</span>
                 <form method="POST" action="{{ url_for('auth.logout') }}" class="nav-form">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="nav-button">Logout</button>
+                    <button type="submit" class="nav-button">{{ t('nav_logout') }}</button>
                 </form>
             {% else %}
-                <a href="{{ url_for('auth.login') }}">Login</a>
-                <a href="{{ url_for('auth.register') }}">Register</a>
+                <a href="{{ url_for('auth.login') }}">{{ t('nav_login') }}</a>
+                <a href="{{ url_for('auth.register') }}">{{ t('nav_register') }}</a>
             {% endif %}
+            <span class="lang-switch">
+                <a href="{{ url_for('main.set_language', lang='en', next=request.path) }}"
+                   class="{{ 'active' if lang == 'en' else '' }}">EN</a>
+                <a href="{{ url_for('main.set_language', lang='hi', next=request.path) }}"
+                   class="{{ 'active' if lang == 'hi' else '' }}">हिन्दी</a>
+            </span>
         </nav>
     </header>
 
@@ -35,7 +41,7 @@
     </main>
 
     <footer class="footer">
-        YatraEase &copy; 2026. A student portfolio project with simulated data.
+        {{ t('footer_text') }}
     </footer>
 </body>
 </html>

@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}YatraEase - Home{% endblock %}
+{% block title %}YatraEase - {{ t('nav_home') }}{% endblock %}
 
 {% block content %}
 <section class="hero">
-    <h1>Welcome to YatraEase</h1>
-    <p>Book buses, stays and attractions across Andhra Pradesh and Telangana.</p>
+    <h1>{{ t('welcome_title') }}</h1>
+    <p>{{ t('welcome_sub') }}</p>
 </section>
 
-<h2>Popular services</h2>
+<h2>{{ t('popular_services') }}</h2>
 <br>
 <div class="grid">
     {% for service in services %}
     <div class="card">
-        <span class="badge">{{ service.type }}</span>
-        <h3>{{ service.name_en }}</h3>
+        <span class="badge">{{ t('type_' ~ service.type) }}</span>
+        <h3>{{ service.name_hi if lang == 'hi' else service.name_en }}</h3>
         <p class="location">{{ service.location }}</p>
-        <p>{{ service.description_en }}</p>
+        <p>{{ service.description_hi if lang == 'hi' else service.description_en }}</p>
         <p class="price">&#8377;{{ service.price }}</p>
     </div>
     {% endfor %}
