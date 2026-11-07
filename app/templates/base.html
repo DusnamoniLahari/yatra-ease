@@ -9,8 +9,18 @@
 <body>
     <header class="navbar">
         <a class="brand" href="{{ url_for('main.home') }}">YatraEase</a>
-        <nav>
+               <nav>
             <a href="{{ url_for('main.home') }}">Home</a>
+            {% if current_user.is_authenticated %}
+                <span class="nav-user">Hi, {{ current_user.name }}</span>
+                <form method="POST" action="{{ url_for('auth.logout') }}" class="nav-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="nav-button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login</a>
+                <a href="{{ url_for('auth.register') }}">Register</a>
+            {% endif %}
         </nav>
     </header>
 

@@ -1,9 +1,10 @@
 from datetime import datetime
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db
+from app import db, login_manager
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +22,13 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def get_id(self):
+        return str(self.user_id)
+
+    @property
+    def is_admin(self):
+        return self.role == "admin"
 
 
 class Service(db.Model):
@@ -78,3 +86,8 @@ class AuditLog(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=True)
     action = db.Column(db.String(200), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(User, int(user_id))

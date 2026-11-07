@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Register - YatraEase{% endblock %}
+
+{% block content %}
+<section class="form-box">
+    <h2>Create your account</h2>
+
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="field">
+            {{ form.name.label }}
+            {{ form.name(placeholder="Your full name") }}
+            {% for error in form.name.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.email.label }}
+            {{ form.email(placeholder="you@example.com") }}
+            {% for error in form.email.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.password.label }}
+            {{ form.password(placeholder="At least 8 characters") }}
+            {% for error in form.password.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.confirm_password.label }}
+            {{ form.confirm_password(placeholder="Type the password again") }}
+            {% for error in form.confirm_password.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn") }}
+    </form>
+
+    <p class="form-note">
+        Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a>
+    </p>
+</section>
+{% endblock %}
