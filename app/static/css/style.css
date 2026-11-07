@@ -218,3 +218,83 @@ body {
     color: #777;
     font-size: 0.85rem;
 }
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 14px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 16px 0 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 160px;
+}
+
+.filter-field label {
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.filter-search {
+    flex: 1;
+    min-width: 220px;
+}
+
+.filter-field input,
+.filter-field select {
+    padding: 10px 12px;
+    border: 1px solid #ccd2d8;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    outline: none;
+    border-color: #0b5d3b;
+}
+
+.filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn-link {
+    color: #0b5d3b;
+    font-size: 0.95rem;
+}
+
+.result-count {
+    margin-bottom: 14px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    background: #fff;
+    border-radius: 12px;
+    padding: 36px;
+    text-align: center;
+    color: #666;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+a.btn {
+    text-decoration: none;
+}
+
+.view-all {
+    text-align: center;
+    margin: 28px 0 8px;
+}

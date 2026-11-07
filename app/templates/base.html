@@ -11,6 +11,7 @@
         <a class="brand" href="{{ url_for('main.home') }}">YatraEase</a>
         <nav>
             <a href="{{ url_for('main.home') }}">{{ t('nav_home') }}</a>
+            <a href="{{ url_for('main.services') }}">{{ t('nav_services') }}</a>
             {% if current_user.is_authenticated %}
                 <span class="nav-user">{{ t('nav_hi') }}, {{ current_user.name }}</span>
                 <form method="POST" action="{{ url_for('auth.logout') }}" class="nav-form">
@@ -22,9 +23,9 @@
                 <a href="{{ url_for('auth.register') }}">{{ t('nav_register') }}</a>
             {% endif %}
             <span class="lang-switch">
-                <a href="{{ url_for('main.set_language', lang='en', next=request.path) }}"
+                <a href="{{ url_for('main.set_language', lang='en', next=request.full_path.rstrip('?')) }}"
                    class="{{ 'active' if lang == 'en' else '' }}">EN</a>
-                <a href="{{ url_for('main.set_language', lang='hi', next=request.path) }}"
+                <a href="{{ url_for('main.set_language', lang='hi', next=request.full_path.rstrip('?')) }}"
                    class="{{ 'active' if lang == 'hi' else '' }}">हिन्दी</a>
             </span>
         </nav>

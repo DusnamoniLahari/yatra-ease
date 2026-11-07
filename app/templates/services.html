@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}YatraEase - {{ t('services_title') }}{% endblock %}
+
+{% block content %}
+<h2>{{ t('services_title') }}</h2>
+
+<form method="GET" action="{{ url_for('main.services') }}" class="filter-bar">
+    <div class="filter-field filter-search">
+        <label for="q">{{ t('search_label') }}</label>
+        <input type="text" id="q" name="q" value="{{ q }}"
+               placeholder="{{ t('search_placeholder') }}" maxlength="100">
+    </div>
+
+    <div class="filter-field">
+        <label for="type">{{ t('filter_type') }}</label>
+        <select id="type" name="type">
+            <option value="">{{ t('all_types') }}</option>
+            {% for stype in service_types %}
+                <option value="{{ stype }}" {{ 'selected' if stype == selected_type else '' }}>
+                    {{ t('type_' ~ stype) }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-field">
+        <label for="sort">{{ t('sort_by') }}</label>
+        <select id="sort" name="sort">
+            <option value="default" {{ 'selected' if selected_sort == 'default' else '' }}>{{ t('sort_default') }}</option>
+            <option value="price_low" {{ 'selected' if selected_sort == 'price_low' else '' }}>{{ t('sort_price_low') }}</option>
+            <option value="price_high" {{ 'selected' if selected_sort == 'price_high' else '' }}>{{ t('sort_price_high') }}</option>
+            <option value="name" {{ 'selected' if selected_sort == 'name' else '' }}>{{ t('sort_name') }}</option>
+        </select>
+    </div>
+
+    <div class="filter-actions">
+        <button type="submit" class="btn">{{ t('apply_filters') }}</button>
+        <a href="{{ url_for('main.services') }}" class="btn-link">{{ t('reset_filters') }}</a>
+    </div>
+</form>
+
+<p class="result-count">{{ services|length }} {{ t('results_found') }}</p>
+
+{% if services %}
+<div class="grid">
+    {% for service in services %}
+    <div class="card">
+        <span class="badge">{{ t('type_' ~ service.type) }}</span>
+        <h3>{{ service.name_hi if lang == 'hi' else service.name_en }}</h3>
+        <p class="location">{{ service.location }}</p>
+        <p>{{ service.description_hi if lang == 'hi' else service.description_en }}</p>
+        <p class="price">&#8377;{{ service.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">{{ t('no_results') }}</div>
+{% endif %}
+{% endblock %}

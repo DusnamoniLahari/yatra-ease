@@ -11,7 +11,7 @@
 <h2>{{ t('popular_services') }}</h2>
 <br>
 <div class="grid">
-    {% for service in services %}
+    {% for service in services[:6] %}
     <div class="card">
         <span class="badge">{{ t('type_' ~ service.type) }}</span>
         <h3>{{ service.name_hi if lang == 'hi' else service.name_en }}</h3>
@@ -20,5 +20,9 @@
         <p class="price">&#8377;{{ service.price }}</p>
     </div>
     {% endfor %}
+</div>
+
+<div class="view-all">
+    <a href="{{ url_for('main.services') }}" class="btn">{{ t('view_all') }}</a>
 </div>
 {% endblock %}
