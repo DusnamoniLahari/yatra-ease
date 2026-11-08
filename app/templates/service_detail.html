@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ service.name_hi if lang == 'hi' else service.name_en }} - YatraEase{% endblock %}
+
+{% block content %}
+<p><a href="{{ url_for('main.services') }}" class="back-link">&larr; {{ t('back_to_services') }}</a></p>
+
+<section class="detail-box">
+    <span class="badge">{{ t('type_' ~ service.type) }}</span>
+    <h2>{{ service.name_hi if lang == 'hi' else service.name_en }}</h2>
+    <p class="location">{{ service.location }}</p>
+    <p class="detail-desc">{{ service.description_hi if lang == 'hi' else service.description_en }}</p>
+    <p class="price">&#8377;{{ service.price }}</p>
+</section>
+
+<section class="form-box booking-box">
+    <h3>{{ t('book_this_service') }}</h3>
+
+    {% if not current_user.is_authenticated %}
+        <p>{{ t('login_to_book') }}</p>
+        <p style="margin-top: 14px;">
+            <a href="{{ url_for('auth.login', next=request.path) }}" class="btn">{{ t('nav_login') }}</a>
+        </p>
+    {% elif not has_slots %}
+        <p>{{ t('no_slots') }}</p>
+    {% else %}
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="field">
+                <label for="availability_id">{{ t('slot_label') }}</label>
+                {{ form.availability_id(id="availability_id") }}
+                {% for error in form.availability_id.errors %}
+                    <span class="field-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="field">
+                <label for="quantity">{{ t('quantity_label') }}</label>
+                {{ form.quantity(id="quantity", min=1, max=10) }}
+                {% for error in form.quantity.errors %}
+                    <span class="field-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn">{{ t('book_now') }}</button>
+        </form>
+    {% endif %}
+</section>
+{% endblock %}

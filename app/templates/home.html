@@ -14,10 +14,17 @@
     {% for service in services[:6] %}
     <div class="card">
         <span class="badge">{{ t('type_' ~ service.type) }}</span>
-        <h3>{{ service.name_hi if lang == 'hi' else service.name_en }}</h3>
+        <h3>
+            <a href="{{ url_for('bookings.service_detail', service_id=service.service_id) }}" class="card-link">
+                {{ service.name_hi if lang == 'hi' else service.name_en }}
+            </a>
+        </h3>
         <p class="location">{{ service.location }}</p>
         <p>{{ service.description_hi if lang == 'hi' else service.description_en }}</p>
         <p class="price">&#8377;{{ service.price }}</p>
+        <p class="card-action">
+            <a href="{{ url_for('bookings.service_detail', service_id=service.service_id) }}" class="btn btn-small">{{ t('book_now') }}</a>
+        </p>
     </div>
     {% endfor %}
 </div>

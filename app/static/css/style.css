@@ -298,3 +298,106 @@ a.btn {
     text-align: center;
     margin: 28px 0 8px;
 }
+
+.back-link {
+    color: #0b5d3b;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.detail-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 14px 0 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.detail-box h2 {
+    margin: 10px 0 4px;
+}
+
+.detail-box .location {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.detail-desc {
+    margin-bottom: 12px;
+}
+
+.detail-box .price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0b5d3b;
+}
+
+.booking-box {
+    max-width: 520px;
+    margin: 0 0 24px;
+}
+
+.booking-box h3 {
+    margin-bottom: 14px;
+}
+
+.field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccd2d8;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+}
+
+.field select:focus {
+    outline: none;
+    border-color: #0b5d3b;
+}
+
+.confirm-box {
+    max-width: 560px;
+}
+
+.confirm-box h2 {
+    color: #0b5d3b;
+}
+
+.confirm-id {
+    margin-bottom: 16px;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.summary-table td {
+    padding: 10px 4px;
+    border-bottom: 1px solid #e5e8eb;
+}
+
+.summary-table td:first-child {
+    color: #666;
+    width: 40%;
+}
+
+.card-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    color: #0b5d3b;
+    text-decoration: underline;
+}
+
+.card-action {
+    margin-top: 12px;
+}
+
+.btn-small {
+    padding: 7px 16px;
+    font-size: 0.9rem;
+}

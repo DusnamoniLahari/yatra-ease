@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('booking_confirmed') }} - YatraEase{% endblock %}
+
+{% block content %}
+<section class="detail-box confirm-box">
+    <h2>{{ t('booking_confirmed') }}</h2>
+    <p class="confirm-id">{{ t('booking_id') }}: <strong>#{{ booking.booking_id }}</strong></p>
+
+    <table class="summary-table">
+        <tr>
+            <td>{{ t('booking_service') }}</td>
+            <td>{{ service.name_hi if lang == 'hi' else service.name_en }}</td>
+        </tr>
+        <tr>
+            <td>{{ t('booking_location') }}</td>
+            <td>{{ service.location }}</td>
+        </tr>
+        <tr>
+            <td>{{ t('booking_date') }}</td>
+            <td>{{ booking.slot.date.strftime('%d %b %Y') }}</td>
+        </tr>
+        <tr>
+            <td>{{ t('booking_slot') }}</td>
+            <td>{{ booking.slot.time_slot }}</td>
+        </tr>
+        <tr>
+            <td>{{ t('quantity_label') }}</td>
+            <td>{{ booking.quantity }}</td>
+        </tr>
+        <tr>
+            <td>{{ t('booking_total') }}</td>
+            <td><strong>&#8377;{{ booking.total_price }}</strong></td>
+        </tr>
+        <tr>
+            <td>{{ t('booking_status') }}</td>
+            <td>{{ t('status_' ~ booking.status) }}</td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 20px;">
+        <a href="{{ url_for('main.services') }}" class="btn">{{ t('book_more') }}</a>
+    </p>
+</section>
+{% endblock %}

@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField
+from wtforms.validators import (
+    DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
+)
 from app.models import User
 
 
@@ -23,3 +25,13 @@ class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Log in")
+
+
+class BookingForm(FlaskForm):
+    availability_id = SelectField("Date and time", coerce=int, validators=[DataRequired()])
+    quantity = IntegerField(
+        "Quantity",
+        default=1,
+        validators=[DataRequired(), NumberRange(min=1, max=10)],
+    )
+    submit = SubmitField("Book now")
