@@ -1,3 +1,4 @@
+import os
 from datetime import date, timedelta
 from app import create_app, db
 from app.models import User, Service, Availability
@@ -60,17 +61,29 @@ SERVICES = [
 
 DAYS_AHEAD = 14
 
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@yatraease.com").strip().lower()
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+DEMO_PASSWORD = os.environ.get("DEMO_PASSWORD", "")
+
+if len(ADMIN_PASSWORD) < 12 or ADMIN_PASSWORD.startswith("CHOOSE_"):
+    raise SystemExit("Set your own ADMIN_PASSWORD in .env (at least 12 characters).")
+if DEMO_PASSWORD and (len(DEMO_PASSWORD) < 8 or DEMO_PASSWORD.startswith("CHOOSE_")):
+    raise SystemExit("Set your own DEMO_PASSWORD in .env (at least 8 characters).")
+if os.environ.get("SECRET_KEY", "").startswith("PASTE_"):
+    raise SystemExit("Replace the SECRET_KEY placeholder in .env with a generated key.")
+
 with app.app_context():
     db.drop_all()
     db.create_all()
 
-    admin = User(name="Admin", email="admin@yatraease.com", role="admin")
-    admin.set_password("Admin@123")
+    admin = User(name="Admin", email=ADMIN_EMAIL, role="admin")
+    admin.set_password(ADMIN_PASSWORD)
     db.session.add(admin)
 
-    visitor = User(name="Test Visitor", email="visitor@example.com", role="visitor")
-    visitor.set_password("Visitor@123")
-    db.session.add(visitor)
+    if DEMO_PASSWORD:
+        visitor = User(name="Test Visitor", email="visitor@example.com", role="visitor")
+        visitor.set_password(DEMO_PASSWORD)
+        db.session.add(visitor)
 
     for (stype, name_en, name_hi, desc_en, desc_hi,
          location, price, slots, capacity) in SERVICES:
@@ -78,7 +91,7 @@ with app.app_context():
                           description_en=desc_en, description_hi=desc_hi,
                           location=location, price=price)
         db.session.add(service)
-        db.session.flush()  # gives service.service_id before commit
+        db.session.flush()
 
         for day in range(DAYS_AHEAD):
             slot_date = date.today() + timedelta(days=day)
