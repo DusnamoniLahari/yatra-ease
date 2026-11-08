@@ -80,3 +80,52 @@ def confirmation(booking_id):
     if booking.user_id != current_user.user_id:
         abort(404)
     return render_template("confirmation.html", booking=booking, service=booking.slot.service)
+
+
+@bookings.route("/my-bookings")
+@login_required
+def my_bookings():
+    user_bookings = (
+        Booking.query.filter_by(user_id=current_user.user_id)
+        .order_by(Booking.created_at.desc())
+        .all()
+    )
+    return render_template("my_bookings.html", user_bookings=user_bookings, today=date.today())
+
+
+@bookings.route("/booking/<int:booking_id>/cancel", methods=["POST"])
+@login_required
+def cancel_booking(booking_id):
+    booking = db.get_or_404(Booking, booking_id)
+    if booking.user_id != current_user.user_id:
+        abort(404)
+
+    if booking.slot.date < date.today():
+        flash("Past bookings cannot be cancelled.", "error")
+        return redirect(url_for("bookings.my_bookings"))
+
+    changed = (
+        Booking.query.filter(
+            Booking.booking_id == booking_id,
+            Booking.user_id == current_user.user_id,
+            Booking.status == "confirmed",
+        ).update({Booking.status: "cancelled"}, synchronize_session=False)
+    )
+
+    if changed != 1:
+        db.session.rollback()
+        flash("This booking is already cancelled.", "error")
+        return redirect(url_for("bookings.my_bookings"))
+
+    Availability.query.filter(
+        Availability.availability_id == booking.availability_id,
+        Availability.booked_count >= booking.quantity,
+    ).update(
+        {Availability.booked_count: Availability.booked_count - booking.quantity},
+        synchronize_session=False,
+    )
+    db.session.commit()
+
+    log_action(f"Booking {booking_id} cancelled", current_user.user_id)
+    flash("Booking cancelled.", "success")
+    return redirect(url_for("bookings.my_bookings"))
