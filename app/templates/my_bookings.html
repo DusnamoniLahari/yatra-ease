@@ -39,7 +39,7 @@
                     {% if booking.status == 'confirmed' and booking.slot.date >= today %}
                     <form method="POST"
                           action="{{ url_for('bookings.cancel_booking', booking_id=booking.booking_id) }}"
-                          onsubmit="return confirm('{{ t('cancel_confirm') }}');">
+                          data-confirm="{{ t('cancel_confirm') }}">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button type="submit" class="btn-cancel">{{ t('cancel_booking') }}</button>
                     </form>
