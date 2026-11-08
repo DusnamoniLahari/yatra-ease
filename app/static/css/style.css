@@ -663,3 +663,16 @@ a.btn {
     margin-top: 0;
     box-shadow: none;
 }
+
+.error-box {
+    max-width: 520px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.error-code {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #0b5d3b;
+    line-height: 1;
+}

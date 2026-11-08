@@ -7,6 +7,12 @@ from wtforms.validators import (
 )
 from app.models import User
 
+COMMON_PASSWORDS = {
+    "password", "password1", "password123", "12345678", "123456789",
+    "qwerty123", "iloveyou1", "admin123", "welcome1", "abc12345",
+    "letmein123", "india12345", "hyderabad1", "yatraease1",
+}
+
 
 class RegisterForm(FlaskForm):
     name = StringField("Full name", validators=[DataRequired(), Length(min=2, max=100)])
@@ -21,6 +27,13 @@ class RegisterForm(FlaskForm):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError("This email is already registered.")
+
+    def validate_password(self, field):
+        value = field.data or ""
+        if not any(c.isalpha() for c in value) or not any(c.isdigit() for c in value):
+            raise ValidationError("Password must contain at least one letter and one number.")
+        if value.lower() in COMMON_PASSWORDS:
+            raise ValidationError("This password is too common. Choose another one.")
 
 
 class LoginForm(FlaskForm):

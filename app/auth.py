@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from urllib.parse import urlparse
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
@@ -6,6 +7,9 @@ from app.forms import RegisterForm, LoginForm
 from app.models import User, AuditLog
 
 auth = Blueprint("auth", __name__)
+
+MAX_FAILED_LOGINS = 5
+LOCKOUT_MINUTES = 15
 
 
 def log_action(action, user_id=None):
@@ -18,6 +22,18 @@ def is_safe_url(target):
         return False
     parts = urlparse(target)
     return parts.scheme == "" and parts.netloc == "" and target.startswith("/")
+
+
+def failed_action(email):
+    return f"Failed login attempt for {email[:120]}"
+
+
+def recent_failures(email):
+    since = datetime.utcnow() - timedelta(minutes=LOCKOUT_MINUTES)
+    return AuditLog.query.filter(
+        AuditLog.action == failed_action(email),
+        AuditLog.timestamp >= since,
+    ).count()
 
 
 @auth.route("/register", methods=["GET", "POST"])
@@ -49,6 +65,14 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data.lower().strip()
+
+        if recent_failures(email) >= MAX_FAILED_LOGINS:
+            flash(
+                f"Too many failed attempts. Please try again in {LOCKOUT_MINUTES} minutes.",
+                "error",
+            )
+            return render_template("login.html", form=form), 429
+
         user = User.query.filter_by(email=email).first()
 
         if user and user.check_password(form.password.data):
@@ -59,7 +83,7 @@ def login():
                 next_page = url_for("main.home")
             return redirect(next_page)
 
-        log_action(f"Failed login attempt for {email}")
+        log_action(failed_action(email))
         flash("Invalid email or password.", "error")
 
     return render_template("login.html", form=form)

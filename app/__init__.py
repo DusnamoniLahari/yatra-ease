@@ -46,6 +46,7 @@ def create_app():
     from app.bookings import bookings
     from app.admin import admin
     from app.dashboard import dashboard
+    from app.errors import errors
     from app.translations import translate, SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE
 
     app.register_blueprint(main)
@@ -53,6 +54,7 @@ def create_app():
     app.register_blueprint(bookings)
     app.register_blueprint(admin)
     app.register_blueprint(dashboard)
+    app.register_blueprint(errors)
 
     @app.context_processor
     def inject_language():
