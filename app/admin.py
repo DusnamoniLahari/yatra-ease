@@ -30,7 +30,7 @@ def admin_required(view):
 @admin.route("/")
 @admin_required
 def index():
-    return redirect(url_for("admin.bookings_list"))
+    return redirect(url_for("dashboard.overview"))
 
 
 @admin.route("/bookings")

@@ -520,3 +520,146 @@ a.btn {
     outline: none;
     border-color: #0b5d3b;
 }
+
+.download-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-outline {
+    background: #fff;
+    color: #0b5d3b;
+    border: 1px solid #0b5d3b;
+}
+
+.btn-outline:hover {
+    background: #e3f4ea;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.stat-value {
+    margin-top: 6px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0b5d3b;
+}
+
+.dash-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.panel {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.dash-columns .panel {
+    margin-bottom: 0;
+}
+
+.panel h3 {
+    margin-bottom: 14px;
+    font-size: 1.05rem;
+}
+
+.mini-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mini-table th,
+.mini-table td {
+    padding: 9px 6px;
+    text-align: left;
+    border-bottom: 1px solid #e5e8eb;
+    font-size: 0.92rem;
+}
+
+.mini-table th {
+    color: #666;
+    font-weight: 600;
+}
+
+.bar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bar-label {
+    width: 92px;
+    font-size: 0.82rem;
+    color: #555;
+    flex-shrink: 0;
+}
+
+.bar-track {
+    flex: 1;
+    height: 12px;
+    background: #e8ecef;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #0b5d3b;
+    border-radius: 999px;
+}
+
+.bar-value {
+    width: 32px;
+    text-align: right;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.occ-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 170px;
+}
+
+.occ-cell span {
+    width: 52px;
+    font-size: 0.85rem;
+}
+
+.table-flat {
+    margin-top: 0;
+    box-shadow: none;
+}

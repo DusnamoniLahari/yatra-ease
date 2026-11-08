@@ -3,10 +3,8 @@
 {% block title %}Admin - Services - YatraEase{% endblock %}
 
 {% block content %}
-<div class="admin-tabs">
-    <a href="{{ url_for('admin.bookings_list') }}">Bookings</a>
-    <a href="{{ url_for('admin.services_list') }}" class="active">Services</a>
-</div>
+{% set active_tab = 'services' %}
+{% include "_admin_tabs.html" %}
 
 <div class="admin-header">
     <h2>All services</h2>

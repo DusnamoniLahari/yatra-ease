@@ -1,0 +1,8 @@
+<div class="admin-tabs">
+    <a href="{{ url_for('dashboard.overview') }}"
+       class="{{ 'active' if active_tab == 'dashboard' else '' }}">Dashboard</a>
+    <a href="{{ url_for('admin.bookings_list') }}"
+       class="{{ 'active' if active_tab == 'bookings' else '' }}">Bookings</a>
+    <a href="{{ url_for('admin.services_list') }}"
+       class="{{ 'active' if active_tab == 'services' else '' }}">Services</a>
+</div>

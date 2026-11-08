@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Dashboard - YatraEase{% endblock %}
+
+{% block content %}
+{% set active_tab = 'dashboard' %}
+{% include "_admin_tabs.html" %}
+
+<div class="admin-header">
+    <h2>Dashboard</h2>
+    <div class="download-links">
+        <a href="{{ url_for('dashboard.report_xlsx', start=start, end=end) }}" class="btn btn-small">Download Excel</a>
+        <a href="{{ url_for('dashboard.report_csv', start=start, end=end) }}" class="btn btn-small btn-outline">Download CSV</a>
+    </div>
+</div>
+
+<form method="GET" action="{{ url_for('dashboard.overview') }}" class="filter-bar">
+    <div class="filter-field">
+        <label for="start">From (service date)</label>
+        <input type="date" id="start" name="start" value="{{ start }}">
+    </div>
+    <div class="filter-field">
+        <label for="end">To (service date)</label>
+        <input type="date" id="end" name="end" value="{{ end }}">
+    </div>
+    <div class="filter-actions">
+        <button type="submit" class="btn">Apply</button>
+        <a href="{{ url_for('dashboard.overview') }}" class="btn-link">Reset</a>
+    </div>
+</form>
+
+<div class="stat-grid">
+    <div class="stat-card">
+        <span class="stat-label">Confirmed bookings</span>
+        <span class="stat-value">{{ totals.bookings }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Seats sold</span>
+        <span class="stat-value">{{ totals.seats }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Cancelled bookings</span>
+        <span class="stat-value">{{ totals.cancelled }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Revenue</span>
+        <span class="stat-value">&#8377;{{ '{:,}'.format(totals.revenue) }}</span>
+    </div>
+</div>
+
+<div class="dash-columns">
+    <section class="panel">
+        <h3>Revenue by service type</h3>
+        {% if by_type %}
+        <table class="mini-table">
+            <thead>
+                <tr><th>Type</th><th>Bookings</th><th>Revenue</th></tr>
+            </thead>
+            <tbody>
+                {% for row in by_type %}
+                <tr>
+                    <td><span class="badge">{{ row.type }}</span></td>
+                    <td>{{ row.bookings }}</td>
+                    <td>&#8377;{{ '{:,}'.format(row.revenue) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="muted">No confirmed bookings in this period.</p>
+        {% endif %}
+    </section>
+
+    <section class="panel">
+        <h3>Bookings per day</h3>
+        {% if daily %}
+        <div class="bar-list">
+            {% for d in daily %}
+            <div class="bar-row">
+                <span class="bar-label">{{ d.date }}</span>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: {{ d.bar }}%;"></div>
+                </div>
+                <span class="bar-value">{{ d.bookings }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">No confirmed bookings in this period.</p>
+        {% endif %}
+    </section>
+</div>
+
+<section class="panel">
+    <h3>Occupancy by service</h3>
+    {% if occupancy %}
+    <div class="table-wrap table-flat">
+        <table class="bookings-table">
+            <thead>
+                <tr>
+                    <th>Service</th>
+                    <th>Type</th>
+                    <th>Booked</th>
+                    <th>Capacity</th>
+                    <th>Occupancy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in occupancy %}
+                <tr>
+                    <td>{{ o.name }}</td>
+                    <td><span class="badge">{{ o.type }}</span></td>
+                    <td>{{ o.booked }}</td>
+                    <td>{{ o.capacity }}</td>
+                    <td>
+                        <div class="occ-cell">
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width: {{ o.percent }}%;"></div>
+                            </div>
+                            <span>{{ o.percent }}%</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="muted">No slots exist in this period.</p>
+    {% endif %}
+</section>
+{% endblock %}
