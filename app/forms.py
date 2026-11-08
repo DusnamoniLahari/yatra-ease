@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField
+from wtforms import (
+    StringField, PasswordField, SubmitField, IntegerField, SelectField, TextAreaField
+)
 from wtforms.validators import (
     DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
 )
@@ -35,3 +37,23 @@ class BookingForm(FlaskForm):
         validators=[DataRequired(), NumberRange(min=1, max=10)],
     )
     submit = SubmitField("Book now")
+
+
+class ServiceForm(FlaskForm):
+    type = SelectField(
+        "Type",
+        choices=[
+            ("bus", "Bus"),
+            ("hotel", "Hotel"),
+            ("campsite", "Campsite"),
+            ("attraction", "Attraction"),
+        ],
+        validators=[DataRequired()],
+    )
+    name_en = StringField("Name (English)", validators=[DataRequired(), Length(max=150)])
+    name_hi = StringField("Name (Hindi)", validators=[DataRequired(), Length(max=150)])
+    description_en = TextAreaField("Description (English)", validators=[DataRequired(), Length(max=1000)])
+    description_hi = TextAreaField("Description (Hindi)", validators=[DataRequired(), Length(max=1000)])
+    location = StringField("Location", validators=[DataRequired(), Length(max=100)])
+    price = IntegerField("Price (INR)", validators=[DataRequired(), NumberRange(min=1, max=100000)])
+    submit = SubmitField("Save service")

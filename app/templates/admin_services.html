@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Services - YatraEase{% endblock %}
+
+{% block content %}
+<div class="admin-tabs">
+    <a href="{{ url_for('admin.bookings_list') }}">Bookings</a>
+    <a href="{{ url_for('admin.services_list') }}" class="active">Services</a>
+</div>
+
+<div class="admin-header">
+    <h2>All services</h2>
+    <a href="{{ url_for('admin.service_new') }}" class="btn btn-small">+ Add service</a>
+</div>
+
+<div class="table-wrap">
+    <table class="bookings-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <td>{{ service.service_id }}</td>
+                <td><span class="badge">{{ service.type }}</span></td>
+                <td>{{ service.name_en }}</td>
+                <td>{{ service.location }}</td>
+                <td>&#8377;{{ service.price }}</td>
+                <td>
+                    <a href="{{ url_for('admin.service_edit', service_id=service.service_id) }}">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

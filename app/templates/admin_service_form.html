@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - {{ title }} - YatraEase{% endblock %}
+
+{% block content %}
+<div class="admin-tabs">
+    <a href="{{ url_for('admin.bookings_list') }}">Bookings</a>
+    <a href="{{ url_for('admin.services_list') }}" class="active">Services</a>
+</div>
+
+<section class="form-box admin-form">
+    <h2>{{ title }}</h2>
+
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="field">
+            {{ form.type.label }}
+            {{ form.type() }}
+            {% for error in form.type.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.name_en.label }}
+            {{ form.name_en() }}
+            {% for error in form.name_en.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.name_hi.label }}
+            {{ form.name_hi() }}
+            {% for error in form.name_hi.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.description_en.label }}
+            {{ form.description_en(rows=3) }}
+            {% for error in form.description_en.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.description_hi.label }}
+            {{ form.description_hi(rows=3) }}
+            {% for error in form.description_hi.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.location.label }}
+            {{ form.location() }}
+            {% for error in form.location.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.price.label }}
+            {{ form.price(min=1, max=100000) }}
+            {% for error in form.price.errors %}
+                <span class="field-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn") }}
+        <a href="{{ url_for('admin.services_list') }}" class="btn-link" style="margin-left: 14px;">Cancel</a>
+    </form>
+</section>
+{% endblock %}

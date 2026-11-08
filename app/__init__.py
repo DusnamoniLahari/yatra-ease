@@ -25,11 +25,13 @@ def create_app():
     from app.routes import main
     from app.auth import auth
     from app.bookings import bookings
+    from app.admin import admin
     from app.translations import translate, SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE
 
     app.register_blueprint(main)
     app.register_blueprint(auth)
     app.register_blueprint(bookings)
+    app.register_blueprint(admin)
 
     @app.context_processor
     def inject_language():

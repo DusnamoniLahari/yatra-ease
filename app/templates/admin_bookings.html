@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Bookings - YatraEase{% endblock %}
+
+{% block content %}
+<div class="admin-tabs">
+    <a href="{{ url_for('admin.bookings_list') }}" class="active">Bookings</a>
+    <a href="{{ url_for('admin.services_list') }}">Services</a>
+</div>
+
+<h2>All bookings</h2>
+
+<form method="GET" action="{{ url_for('admin.bookings_list') }}" class="filter-bar">
+    <div class="filter-field filter-search">
+        <label for="q">Search</label>
+        <input type="text" id="q" name="q" value="{{ q }}"
+               placeholder="Customer name, email or booking number" maxlength="100">
+    </div>
+
+    <div class="filter-field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+            <option value="">All statuses</option>
+            {% for s in statuses %}
+                <option value="{{ s }}" {{ 'selected' if s == status else '' }}>{{ s|capitalize }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-actions">
+        <button type="submit" class="btn">Apply</button>
+        <a href="{{ url_for('admin.bookings_list') }}" class="btn-link">Reset</a>
+    </div>
+</form>
+
+<p class="result-count">{{ bookings|length }} bookings found</p>
+
+{% if bookings %}
+<div class="table-wrap">
+    <table class="bookings-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time slot</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>#{{ booking.booking_id }}</td>
+                <td>
+                    {{ booking.user.name }}<br>
+                    <span class="muted">{{ booking.user.email }}</span>
+                </td>
+                <td>{{ booking.slot.service.name_en }}</td>
+                <td>{{ booking.slot.date.strftime('%d %b %Y') }}</td>
+                <td>{{ booking.slot.time_slot }}</td>
+                <td>{{ booking.quantity }}</td>
+                <td>&#8377;{{ booking.total_price }}</td>
+                <td>
+                    <span class="status status-{{ booking.status }}">{{ booking.status|capitalize }}</span>
+                </td>
+                <td>
+                    {% if booking.status == 'confirmed' and booking.slot.date >= today %}
+                    <form method="POST"
+                          action="{{ url_for('admin.cancel_booking', booking_id=booking.booking_id) }}"
+                          onsubmit="return confirm('Cancel booking #{{ booking.booking_id }}?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn-cancel">Cancel</button>
+                    </form>
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">No bookings match your search.</div>
+{% endif %}
+{% endblock %}
