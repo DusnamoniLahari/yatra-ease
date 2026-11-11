@@ -1,0 +1,13 @@
+[Unit]
+Description=YatraEase (gunicorn)
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/yatra-ease
+ExecStart=/home/ubuntu/yatra-ease/venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8000 wsgi:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

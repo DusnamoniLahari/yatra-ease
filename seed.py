@@ -59,7 +59,10 @@ SERVICES = [
      "Hyderabad", 1800, ["Day 09:00"], 150),
 ]
 
-DAYS_AHEAD = 14
+DAYS_AHEAD = 120
+
+if os.environ.get("APP_ENV") == "production" and os.environ.get("CONFIRM_RESET") != "yes":
+    raise SystemExit("Refusing to wipe a production database. Run with CONFIRM_RESET=yes to continue.")
 
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@yatraease.com").strip().lower()
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
