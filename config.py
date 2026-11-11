@@ -1,3 +1,4 @@
+
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -10,13 +11,22 @@ DEV_SECRET = "dev-only-change-me"
 class Config:
     APP_ENV = os.environ.get("APP_ENV", "development")
     SECRET_KEY = os.environ.get("SECRET_KEY", DEV_SECRET)
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///yatra.db")
+
+    DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///yatra.db")
+
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace(
+            "postgres://", "postgresql://", 1
+        )
+
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
     SESSION_COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "0") == "1"
     PERMANENT_SESSION_LIFETIME = timedelta(hours=8)
+
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_SAMESITE = "Lax"
     REMEMBER_COOKIE_SECURE = SESSION_COOKIE_SECURE
