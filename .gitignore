@@ -5,3 +5,6 @@ __pycache__/
 instance/
 *.db
 .vscode/
+.coverage
+htmlcov/
+.pytest_cache/
